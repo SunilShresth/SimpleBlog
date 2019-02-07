@@ -7,13 +7,13 @@ from django.contrib.auth.models import User
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return render(request, 'blog/index.html')
 
 
 class BlogListView(generic.ListView):
     model = Blog
     paginate_by = 5
-    template_name = 'blogs/blog.html'
+    template_name = 'blogs/blog_list.html'
 
 class BlogDetailView(generic.DetailView):
     """
