@@ -95,7 +95,8 @@
 
 			<!-- container -->
 			<div class="container">
-
+				<!--show only there exist at least one blog-->
+				{% if blog_list %}
 				<!-- row -->
 				<div class="row">
 
@@ -105,6 +106,7 @@
 						<!-- row -->
 						<div class="row">
 
+							{% for blog in blog_list %}
 							<!-- single blog -->
 							<div class="col-md-6">
 								<div class="single-blog">
@@ -113,77 +115,18 @@
 											<img src="{% static 'blog/img/blog01.jpg' %}" alt="">
 										</a>
 									</div>
-									<h4><a href="blog-post.html">Pro eu error molestie deserunt. At per viderer bonorum persecuti.</a></h4>
+									<h4><a href="blog-post.html">{{ blog.title }}</a></h4>
 									<div class="blog-meta">
-										<span class="blog-meta-author">By: <a href="#">John Doe</a></span>
+										<span class="blog-meta-author">By: <a href="#">{{ blog.author }}</a></span>
 										<div class="pull-right">
-											<span>18 Oct, 2017</span>
+											<span>{{ blog.post_date }}</span>
 											<span class="blog-meta-comments"><a href="#"><i class="fa fa-comments"></i> 35</a></span>
 										</div>
 									</div>
 								</div>
 							</div>
 							<!-- /single blog -->
-
-							<!-- single blog -->
-							<div class="col-md-6">
-								<div class="single-blog">
-									<div class="blog-img">
-										<a href="blog-post.html">
-											<img src="{% static 'blog/img/blog02.jpg' %}" alt="">
-										</a>
-									</div>
-									<h4><a href="blog-post.html">Pro eu error molestie deserunt. At per viderer bonorum persecuti.</a></h4>
-									<div class="blog-meta">
-										<span class="blog-meta-author">By: <a href="#">John Doe</a></span>
-										<div class="pull-right">
-											<span>18 Oct, 2017</span>
-											<span class="blog-meta-comments"><a href="#"><i class="fa fa-comments"></i> 35</a></span>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /single blog -->
-
-							<!-- single blog -->
-							<div class="col-md-6">
-								<div class="single-blog">
-									<div class="blog-img">
-										<a href="blog-post.html">
-											<img src="{% static 'blog/img/blog03.jpg' %}" alt="">
-										</a>
-									</div>
-									<h4><a href="blog-post.html">Pro eu error molestie deserunt. At per viderer bonorum persecuti.</a></h4>
-									<div class="blog-meta">
-										<span class="blog-meta-author">By: <a href="#">John Doe</a></span>
-										<div class="pull-right">
-											<span>18 Oct, 2017</span>
-											<span class="blog-meta-comments"><a href="#"><i class="fa fa-comments"></i> 35</a></span>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /single blog -->
-
-							<!-- single blog -->
-							<div class="col-md-6">
-								<div class="single-blog">
-									<div class="blog-img">
-										<a href="blog-post.html">
-											<img src="{% static 'blog/img/blog04.jpg' %}" alt="">
-										</a>
-									</div>
-									<h4><a href="blog-post.html">Pro eu error molestie deserunt. At per viderer bonorum persecuti.</a></h4>
-									<div class="blog-meta">
-										<span class="blog-meta-author">By: <a href="#">John Doe</a></span>
-										<div class="pull-right">
-											<span>18 Oct, 2017</span>
-											<span class="blog-meta-comments"><a href="#"><i class="fa fa-comments"></i> 35</a></span>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /single blog -->
+							{% endfor %}
 
 						</div>
 						<!-- /row -->
@@ -191,20 +134,35 @@
 						<!-- row -->
 						<div class="row">
 
+							{% if is_paginated %}
 							<!-- pagination -->
 							<div class="col-md-12">
 								<div class="post-pagination">
-									<a href="#" class="pagination-back pull-left">Back</a>
-									<ul class="pages">
+									{% if page_obj.has_previous %}
+										<a href="?page={{ page_obj.previous_page_number }}" class="pagination-back pull-left">Previous</a>
+									{% endif %}
+									{% for num in page_obj.paginator.page_range %}
+										<ul class="pages">
+										{% if page_obj.number == num %}
+											<li class="active" href="?page={{ num }}">{{ num }}</li>
+										{% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2'%}
+										<li><a href="?page={{ num }}">{{ num }}</a></li>
+										{% endif%}
+										</ul>
+									{% endfor %}
+									<!-- <ul class="pages">
 										<li class="active">1</li>
 										<li><a href="#">2</a></li>
 										<li><a href="#">3</a></li>
 										<li><a href="#">4</a></li>
-									</ul>
-									<a href="#" class="pagination-next pull-right">Next</a>
+									</ul> -->
+									{% if page_obj.has_next %}
+										<a href="?page={{ page_obj.next_page_number }}" class="pagination-next pull-right">Next</a>
+									{% endif %}
 								</div>
 							</div>
 							<!-- pagination -->
+							{% endif %}
 
 						</div>
 						<!-- /row -->
@@ -290,7 +248,9 @@
 
 				</div>
 				<!-- row -->
-
+				{% else %}
+      		<h1>There are no blogs.</h1>
+    		{% endif %}
 			</div>
 			<!-- container -->
 

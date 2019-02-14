@@ -12,7 +12,7 @@ def index(request):
 
 class BlogListView(generic.ListView):
     model = Blog
-    paginate_by = 5
+    paginate_by = 4
     template_name = 'blogs/blog_list.html'
 
 class BlogDetailView(generic.DetailView):

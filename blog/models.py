@@ -15,7 +15,7 @@ class BlogAuthor(models.Model):
         return reverse('blogs-by-author')
 
     def __str__(self):
-        return self.name
+        return self.name.username
 
 
 class Blog(models.Model):
