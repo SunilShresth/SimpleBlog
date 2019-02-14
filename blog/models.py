@@ -24,6 +24,7 @@ class Blog(models.Model):
     description = models.TextField()
     author = models.ForeignKey(BlogAuthor, on_delete=models.SET_NULL, null=True)
     post_date = models.DateField(default=date.today)
+    likes = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-post_date']

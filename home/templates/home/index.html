@@ -13,13 +13,13 @@
 		<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
 
 		<!-- Bootstrap -->
-		<link type="text/css" rel="stylesheet" href="{% static 'blog/css/bootstrap.min.css' %}"/>
+		<link type="text/css" rel="stylesheet" href="{% static 'home/css/bootstrap.min.css' %}"/>
 
 		<!-- Font Awesome Icon -->
-		<link rel="stylesheet" href="{% static 'blog/css/font-awesome.min.css' %}">
+		<link rel="stylesheet" href="{% static 'home/css/font-awesome.min.css' %}">
 
 		<!-- Custom stlylesheet -->
-		<link type="text/css" rel="stylesheet" href="{% static 'blog/css/style.css' %}"/>
+		<link type="text/css" rel="stylesheet" href="{% static 'home/css/style.css' %}"/>
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -38,8 +38,8 @@
 				<div class="navbar-header">
 					<!-- Logo -->
 					<div class="navbar-brand">
-						<a class="logo" href="/blog">
-							<img src="{% static 'blog/img/logo-alt.png' %}" alt="logo">
+						<a class="logo" href="{% url 'index' %}">
+							<img src="{% static 'home/img/logo-alt.png' %}" alt="logo">
 						</a>
 					</div>
 					<!-- /Logo -->
@@ -71,7 +71,7 @@
 		<div id="home" class="hero-area">
 
 			<!-- Backgound Image -->
-			<div class="bg-image bg-parallax overlay" style="background-image:url({% static 'blog/img/home-background.jpg' %})"></div>
+			<div class="bg-image bg-parallax overlay" style="background-image:url({% static 'home/img/home-background.jpg' %})"></div>
 			<!-- /Backgound Image -->
 
 			<div class="home-wrapper">
@@ -138,7 +138,7 @@
 
 					<div class="col-md-6">
 						<div class="about-img">
-							<img src="./img/about.png" alt="">
+							<img src="home/img/about.png" alt="">
 						</div>
 					</div>
 
@@ -531,9 +531,9 @@
 
 
 		<!-- jQuery Plugins -->
-		<script type="text/javascript" src="{% static 'blog/js/jquery.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'blog/js/bootstrap.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'blog/js/main.js' %}"></script>
+		<script type="text/javascript" src="{% static 'home/js/jquery.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'home/js/main.js' %}"></script>
 
 	</body>
 </html>
