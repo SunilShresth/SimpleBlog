@@ -38,7 +38,7 @@
 				<div class="navbar-header">
 					<!-- Logo -->
 					<div class="navbar-brand">
-						<a class="logo" href="{% url 'index' %}">
+						<a class="logo" href="index.html">
 							<img src="{% static 'blog/img/logo.png' %}" alt="logo">
 						</a>
 					</div>
@@ -57,7 +57,7 @@
 						<li><a href="{% url 'index' %}">Home</a></li>
 						<li><a href="#">About</a></li>
 						<li><a href="#">Courses</a></li>
-						<li><a href="{% url 'blogs'%}">Blog</a></li>
+						<li><a href="{% url 'blogs' %}">Blog</a></li>
 						<li><a href="contact.html">Contact</a></li>
 					</ul>
 				</nav>
@@ -71,18 +71,23 @@
 		<div class="hero-area section">
 
 			<!-- Backgound Image -->
-			<div class="bg-image bg-parallax overlay" style="background-image:url({% static 'blog/img/page-background.jpg' %})"></div>
+			<div class="bg-image bg-parallax overlay" style="background-image:url({% static 'blog/img/blog-post-background.jpg' %})"></div>
 			<!-- /Backgound Image -->
 
 			<div class="container">
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1 text-center">
 						<ul class="hero-area-tree">
-							<li><a href="{% url 'index' %}">Home</a></li>
-							<li>Blog</li>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="blog.html">Blog</a></li>
+							<li>{{ blog_post.title }}</li>
 						</ul>
-						<h1 class="white-text">Blog Page</h1>
-
+						<h1 class="white-text">{{ blog_post.title }}</h1>
+						<ul class="blog-post-meta">
+							<li class="blog-meta-author">By : <a href="#">{{ blog_post.author }}</a></li>
+							<li>{{ blog_post.post_date }}</li>
+							<li class="blog-meta-comments"><a href="#"><i class="fa fa-comments"></i> {{blog_post.blogcomment_set.count}}</a></li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -95,77 +100,88 @@
 
 			<!-- container -->
 			<div class="container">
-				<!--show only there exist at least one blog-->
-				{% if blog_list %}
+
 				<!-- row -->
 				<div class="row">
 
 					<!-- main blog -->
 					<div id="main" class="col-md-9">
 
-						<!-- row -->
-						<div class="row">
+						<!-- blog post -->
+						<div class="blog-post">
+                            {{ blog_post.description }}
+                        </div>
+						<!-- /blog post -->
 
-							{% for blog in blog_list %}
-							<!-- single blog -->
-							<div class="col-md-6">
-								<div class="single-blog">
-									<div class="blog-img">
-										<a href="{% url 'blog-detail' blog.pk %}">
-											<img src="{% static 'blog/img/blog01.jpg' %}" alt="">
-										</a>
+						<!-- blog share -->
+						<div class="blog-share">
+							<h4>Share This Post:</h4>
+							<a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+							<a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+							<a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+						</div>
+						<!-- /blog share -->
+
+						<!-- blog comments -->
+						<div class="blog-comments">
+							<h3>{{ blog_post.blogcomment_set.count }} Comments</h3>
+
+                            {% for comment in blog_post.blogcomment_set.all %}
+                            <!-- single comment -->
+							<div class="media">
+								<div class="media-left">
+									<img src="{% static 'blog/img/avatar.png' %}" alt="">
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">{{ comment.author }}</h4>
+									<p>{{ comment.description }}</p>
+									<div class="date-reply"><span>{{ comment.post_date }}</span><a href="#" class="reply">Reply</a></div>
+								</div>
+
+								<!-- comment reply -->
+								<div class="media">
+									<div class="media-left">
+										<img src="./img/avatar.png" alt="">
 									</div>
-									<h4><a href="{% url 'blog-detail' blog.pk %}">{{ blog.title }}</a></h4>
-									<div class="blog-meta">
-										<span class="blog-meta-author">By: <a href="#">{{ blog.author }}</a></span>
-										<div class="pull-right">
-											<span>{{ blog.post_date }}</span>
-											<span class="blog-meta-comments"><a href="#"><i class="fa fa-comments"></i> {{ blog.blogcomment_set.count }}</a></span>
-										</div>
+									<div class="media-body">
+										<h4 class="media-heading">John Doe</h4>
+										<p>Cu his iudico appareat ullamcorper, at mea ignota nostrum. Nonumy argumentum id cum, eos adversarium contentiones id</p>
+										<div class="date-reply"><span>Oct 18, 2017 - 4:00AM</span><a href="#" class="reply">Reply</a></div>
 									</div>
 								</div>
-							</div>
-							<!-- /single blog -->
-							{% endfor %}
+								<!-- /comment reply -->
 
-						</div>
-						<!-- /row -->
-
-						<!-- row -->
-						<div class="row">
-
-							{% if is_paginated %}
-							<!-- pagination -->
-							<div class="col-md-12">
-								<div class="post-pagination">
-									{% if page_obj.has_previous %}
-										<a href="?page={{ page_obj.previous_page_number }}" class="pagination-back pull-left">Previous</a>
-									{% endif %}
-									{% for num in page_obj.paginator.page_range %}
-										<ul class="pages">
-										{% if page_obj.number == num %}
-											<li class="active" href="?page={{ num }}">{{ num }}</li>
-										{% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2'%}
-										<li><a href="?page={{ num }}">{{ num }}</a></li>
-										{% endif%}
-										</ul>
-									{% endfor %}
-									<!-- <ul class="pages">
-										<li class="active">1</li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">4</a></li>
-									</ul> -->
-									{% if page_obj.has_next %}
-										<a href="?page={{ page_obj.next_page_number }}" class="pagination-next pull-right">Next</a>
-									{% endif %}
+								<!-- comment reply -->
+								<div class="media">
+									<div class="media-left">
+										<img src="./img/avatar.png" alt="">
+									</div>
+									<div class="media-body">
+										<h4 class="media-heading">John Doe</h4>
+										<p>Cu his iudico appareat ullamcorper, at mea ignota nostrum. Nonumy argumentum id cum, eos adversarium contentiones id</p>
+										<div class="date-reply"><span>Oct 18, 2017 - 4:00AM</span><a href="#" class="reply">Reply</a></div>
+									</div>
 								</div>
+								<!-- /comment reply -->
+
 							</div>
-							<!-- pagination -->
-							{% endif %}
+                            <!-- /single comment -->
+                            {% endfor %}
+
+							<!-- blog reply form -->
+							<div class="blog-reply-form">
+								<h3>Leave Comment</h3>
+								<form>
+									<input class="input name-input" type="text" name="name" placeholder="Name">
+									<input class="input email-input" type="email" name="email" placeholder="Email">
+									<textarea class="input" name="message" placeholder="Enter your Message"></textarea>
+									<button class="main-button icon-button">Submit</button>
+								</form>
+							</div>
+							<!-- /blog reply form -->
 
 						</div>
-						<!-- /row -->
+						<!-- /blog comments -->
 					</div>
 					<!-- /main blog -->
 
@@ -199,7 +215,7 @@
 							<!-- single posts -->
 							<div class="single-post">
 								<a class="single-post-img" href="blog-post.html">
-									<img src="{% static 'blog/img/post01.jp' %}g" alt="">
+									<img src="./img/post01.jpg" alt="">
 								</a>
 								<a href="blog-post.html">Pro eu error molestie deserunt.</a>
 								<p><small>By : John Doe .18 Oct, 2017</small></p>
@@ -209,7 +225,7 @@
 							<!-- single posts -->
 							<div class="single-post">
 								<a class="single-post-img" href="blog-post.html">
-									<img src="{% static 'blog/img/post02.jpg' %}" alt="">
+									<img src="./img/post02.jpg" alt="">
 								</a>
 								<a href="blog-post.html">Pro eu error molestie deserunt.</a>
 								<p><small>By : John Doe .18 Oct, 2017</small></p>
@@ -219,7 +235,7 @@
 							<!-- single posts -->
 							<div class="single-post">
 								<a class="single-post-img" href="blog-post.html">
-									<img src="{% static 'blog/img/post03.jpg' %}" alt="">
+									<img src="./img/post03.jpg" alt="">
 								</a>
 								<a href="blog-post.html">Pro eu error molestie deserunt.</a>
 								<p><small>By : John Doe .18 Oct, 2017</small></p>
@@ -248,9 +264,7 @@
 
 				</div>
 				<!-- row -->
-				{% else %}
-      		<h1>There are no blogs.</h1>
-    		{% endif %}
+
 			</div>
 			<!-- container -->
 
@@ -269,8 +283,8 @@
 					<!-- footer logo -->
 					<div class="col-md-6">
 						<div class="footer-logo">
-							<a class="logo" href="{% url 'index' %}">
-								<img src="{% static 'blog/img/logo.png' %}" alt="logo">
+							<a class="logo" href="index.html">
+								<img src="./img/logo.png" alt="logo">
 							</a>
 						</div>
 					</div>
@@ -279,10 +293,10 @@
 					<!-- footer nav -->
 					<div class="col-md-6">
 						<ul class="footer-nav">
-							<li><a href="{% url 'index' %}">Home</a></li>
+							<li><a href="index.html">Home</a></li>
 							<li><a href="#">About</a></li>
 							<li><a href="#">Courses</a></li>
-							<li><a href="{% url 'blogs' %}">Blog</a></li>
+							<li><a href="blog.html">Blog</a></li>
 							<li><a href="contact.html">Contact</a></li>
 						</ul>
 					</div>

@@ -13,13 +13,15 @@ def index(request):
 class BlogListView(generic.ListView):
     model = Blog
     paginate_by = 4
-    template_name = 'blogs/blog_list.html'
+    # template_name = 'blogs/blog_list.html'
 
 class BlogDetailView(generic.DetailView):
     """
     Generic class-based detail view for a blog.
     """
     model = Blog
+    context_object_name = 'blog_post'
+    # template_name = 'blog/blog_post.html'
 
 
 class BloggerListView(generic.ListView):
