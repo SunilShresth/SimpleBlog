@@ -28,9 +28,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 #Authentication backends
-AUTHENTICATION_BACKENDS = (
-        'django.contrib.auth.backends.ModelBackend',
-    )
+# AUTHENTICATION_BACKENDS = (
+#     # 'userena.backends.UserenaAuthenticationBackend',
+#     # 'guardian.backends.ObjectPermissionBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+#     )
 
 # Application definition
 
