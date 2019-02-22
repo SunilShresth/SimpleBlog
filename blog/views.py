@@ -1,10 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 
 from django.views import generic
 from .models import Blog, BlogAuthor, BlogComment
 from django.contrib.auth.models import User
 
+from .form import CommentForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import auth
 
 def index(request):
     return render(request, 'blog/index.html')
@@ -52,3 +55,28 @@ class BlogsByAuthorListView(generic.ListView):
         context = super(BlogsByAuthorListView, self).get_context_data(**kwargs)
         context['blogger'] = get_object_or_404(BlogAuthor, pk=self.kwargs['pk'])
         return context
+
+
+@login_required(login_url='login')
+def add_comment_to_blog(request, pk):
+    post = get_object_or_404(Blog, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.blog = post
+            comment.author = auth.get_user(request)
+            comment.save()
+            return redirect('blog-detail', pk=post.pk)
+    else:
+        form = CommentForm()
+    return render(request, 'blog/add_comment_to_blog.html', {'form': form})
+
+
+
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(BlogComment, pk=comment_id)
+    blog_id = comment.blog.id
+    if comment.author == request.user:
+        comment.delete()
+    return redirect('blog-detail', blog_id)

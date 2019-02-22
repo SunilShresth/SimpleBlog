@@ -57,6 +57,12 @@
 	<!-- blog comments -->
 	<div class="blog-comments">
 		<h3>{{ blog_post.blogcomment_set.count }} Comments</h3>
+		
+		{% if user.is_authenticated %}
+			<a type="button" class="btn btn-primary" href="{% url 'add-comment' pk=blog_post.pk %}">Post Comment</a>
+		{% else %}
+			<a type="button" class="btn btn-primary" href="{% url 'login' %}">Login to add comment</a>
+		{% endif %}
 
 		{% for comment in blog_post.blogcomment_set.all %}
 		<!-- single comment -->
@@ -67,7 +73,7 @@
 			<div class="media-body">
 				<h4 class="media-heading">{{ comment.author }}</h4>
 				<p>{{ comment.description }}</p>
-				<div class="date-reply"><span>{{ comment.post_date }}</span><a href="#" class="reply">Reply</a></div>
+				<div class="date-reply"><span>{{ comment.post_date }}</span><a href="#" class="reply">Reply</a>{% if comment.author == request.user%}<a href="{% url 'delete-comment' comment.id %}" class="comment-delete">Delete</a> {% endif %}</div>
 			</div>
 
 			<!-- comment reply -->
@@ -99,18 +105,6 @@
 		</div>
 		<!-- /single comment -->
 		{% endfor %}
-
-		<!-- blog reply form -->
-		<div class="blog-reply-form">
-			<h3>Leave Comment</h3>
-			<form>
-				<input class="input name-input" type="text" name="name" placeholder="Name">
-				<input class="input email-input" type="email" name="email" placeholder="Email">
-				<textarea class="input" name="message" placeholder="Enter your Message"></textarea>
-				<button class="main-button icon-button">Submit</button>
-			</form>
-		</div>
-		<!-- /blog reply form -->
 
 	</div>
 	<!-- /blog comments -->

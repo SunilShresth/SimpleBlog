@@ -1160,11 +1160,8 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 	margin-left:15px;
 }
 
-.blog-comments .media .date-reply .comment-delete {
-	position: static;
-	margin-left: 600px;
-	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-	font-style: oblique;
+.blog-comments .media .date-reply .comment-edit {
+	right: 2px;
 	color: red;
 }
 

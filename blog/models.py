@@ -51,7 +51,7 @@ class BlogComment(models.Model):
     blog= models.ForeignKey(Blog, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['post_date']
+        ordering = ['-post_date']
 
     def __str__(self):
         return self.description
